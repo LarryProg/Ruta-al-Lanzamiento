@@ -472,11 +472,18 @@
   .ruta::before{content:'';position:absolute;left:25px;top:20px;bottom:20px;border-left:4px dashed #151515}
   .tramo{position:relative;display:flex;align-items:center;gap:12px}
   .tramo .dot{flex:none;width:46px;height:46px;border:3px solid #000;box-shadow:3px 3px 0 #000;display:flex;align-items:center;justify-content:center;font-size:20px;z-index:1}
-  .tramo .tt{flex:1;min-width:0;background:#fff;border:2px solid var(--line2);padding:8px 12px;display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px}
-  .tramo .tt b{font-size:15.5px;flex:1;min-width:140px}
+  .tramo{align-items:flex-start}
+  .tramo .tt{flex:1;min-width:0;background:#fff;border:2px solid var(--line2);padding:9px 12px}
+  .tramo .th{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px}
+  .tramo .th b{font-size:16px;flex:1;min-width:140px}
+  .tramo ul{list-style:none;margin-top:8px;display:grid;gap:8px}
+  .tramo li{display:flex;gap:9px;align-items:flex-start;font-size:15px;line-height:1.38}
+  .tramo li .pt{flex:none;width:10px;height:10px;border:2px solid #000;margin-top:5px}
+  .tramo li small{display:block;color:var(--muted);font-size:13.5px;line-height:1.38;margin-top:2px}
+  .tramo .okl{font-size:14.5px;color:#1f5f33;margin-top:6px;line-height:1.4}
   .tramo .tag{font-family:'Press Start 2P',monospace;font-size:8px}
   .tramo.here .tt{border:3px solid #151515;background:#fffbe9}
-  .tramo .aqui{flex-basis:100%;font-family:'Press Start 2P',monospace;font-size:9px;color:#c0263f}
+  .tramo .aqui{display:block;font-family:'Press Start 2P',monospace;font-size:9px;color:#c0263f;margin-top:6px}
   .tramo.meta .dot{background:#151515}
   .tramo.meta .tt{background:#151515;color:#fff;border-color:#151515}
   .tramo.meta .tag{color:#7fff5f}
@@ -779,61 +786,69 @@ const GUIDE_COVER = { anim:'rise', prop:'note', lines:[
   'Son **3 paradas cortas** y casi todo se contesta con un toque. __Sin mail ni teléfono.__'] };
 const GUIDE_FINAL = { anim:'jump', prop:'star', lines:[] };
 
-/* ── Diagnóstico: 4 áreas · 0 = bien · 1 = a mejorar · 2 = fuga ── */
+/* ── La hoja de ruta: 4 tramos · cada respuesta puede disparar un problema concreto ──
+   Cada problema: p = qué te pasa · w = por qué te frena · t = qué tenés que hacer (el QUÉ, nunca el CÓMO) · s = 2 te frena / 1 a ajustar
+   Estado del tramo: 0 VAS BIEN · 1 A AJUSTAR · 2 TE FRENA */
 const AREAS = [
-  {k:'sonido', t:'Tu sonido', me:'mi sonido', big:'TU SONIDO', ico:'🎧', fix:'Que tu tema suene a la altura de Spotify antes de sacarlo'},
-  {k:'identidad', t:'A quién le cantás', me:'saber a quién le canto', big:'A QUIEN LE CANTAS', ico:'❤️', fix:'Definir a la persona exacta a la que le cantás'},
-  {k:'perfil', t:'Tu perfil', me:'mi perfil', big:'TU PERFIL', ico:'📱', fix:'Que tu perfil le diga en 5 segundos al que llega por qué quedarse'},
-  {k:'lanzamiento', t:'Tu lanzamiento', me:'mi lanzamiento', big:'TU LANZAMIENTO', ico:'🚀', fix:'Empezar a mover tu tema semanas antes de que salga'}
+  {k:'sonido', t:'Tu sonido', me:'mi sonido', big:'TU SONIDO', ico:'🎧', ok:'Tu canción está terminada y suena a la altura. **Buena base.**'},
+  {k:'identidad', t:'A quién le cantás', me:'saber a quién le canto', big:'A QUIEN LE CANTAS', ico:'❤️', ok:'Tenés claro a quién le cantás y qué te hace distinto. **Eso es oro.**'},
+  {k:'perfil', t:'Tu perfil y tu contenido', me:'mi perfil y mi contenido', big:'TU PERFIL', ico:'📱', ok:'Tu perfil se entiende rápido. **Buena vidriera.**'},
+  {k:'lanzamiento', t:'Tu lanzamiento', me:'mi lanzamiento', big:'TU LANZAMIENTO', ico:'🚀', ok:'Movés tus temas antes de que salgan y tenés fecha. **Bien ahí.**'}
 ];
+const TAGS = ['VAS BIEN','A AJUSTAR','TE FRENA'];
 const DEMO = ['Es una idea o una letra','Demo en el celu','Demo con beat','Grabada, sin mezclar'];
-function scoreOf(k){
-  const a = S;
-  if(k==='sonido'){ let s = {'Igual de pro':0,'Cerca':1,'Lejos':2,'No sé':2}[a.suena]; if(s==null) s=1;
-    if(DEMO.includes(a.estado) && a.fecha==='Este mes') s = 2; if(a.frena==='Cómo suena') s = Math.max(s,1); return s; }
-  if(k==='identidad'){ let s = {'Clarísimo':0,'Más o menos':1,'Le canto a cualquiera que le guste mi género':2}[a.oyente]; if(s==null) s=1;
-    if(a.halago==='Nadie me dice nada 😅') s = Math.min(2, s+1); return s; }
-  if(k==='perfil'){ let s = {'Sí':0,'Creo que no':2,'Nunca lo pensé':2}[a.perfil]; if(s==null) s=1;
-    if(a.frena==='No me ve nadie' || a.frena==='No sé qué publicar') s = Math.max(s,1); return s; }
-  if(k==='lanzamiento'){ let s = {'Semanas antes':0,'El día que salió':2,'Después':2,'Nunca lancé nada':1}[a.ultimo]; if(s==null) s=1;
-    if(a.fecha==='Sin fecha todavía') s = Math.min(2, s+1); if(a.frena==='Lanzo y no pasa nada') s = 2; return s; }
-}
-/* frase de cada área, citando lo que contestó (lenguaje del problema, nunca del cómo) */
-function lineOf(k){
-  const a = S, s = scoreOf(k);
+const HALAGO_TXT = {'La voz':'tu voz','Las letras':'tus letras','El flow':'tu flow','Los beats':'tus beats','La vibra':'tu vibra'};
+function low(t){ return String(t).charAt(0).toLowerCase()+String(t).slice(1); }
+function problemsOf(k){
+  const a = S, out = [];
+  const add = (s, p, w, t) => out.push({s, p, w, t});
   if(k==='sonido'){
-    if(DEMO.includes(a.estado) && a.fecha==='Este mes') return 'Querés sacarla **este mes** y todavía está en __'+low(a.estado)+'__: vas apretado.';
-    if(s===2) return 'Dijiste que al lado de tus referencias suena **'+low(a.suena||'no sé')+'**: en una playlist, tu tema compite en desventaja.';
-    if(s===1) return 'Suena **cerca** de tus referencias, pero __en Spotify ese "cerca" se nota.__';
-    return 'Decís que suena **igual de pro:** buen punto de partida.';
+    if(a.estado==='Es una idea o una letra') add(2, 'Tu próxima canción **todavía es una idea.**', 'Sin una canción terminada no hay nada que lanzar.', 'Convertir la idea en una canción terminada');
+    if(DEMO.includes(a.estado) && a.estado!=='Es una idea o una letra' && a.fecha==='Este mes') add(2, 'Querés sacarla **este mes** y todavía está __'+({'Demo en el celu':'en demo, grabada con el celu','Demo con beat':'en demo con beat','Grabada, sin mezclar':'grabada pero sin mezclar'}[a.estado]||'sin terminar')+'.__', 'Vas a terminarla a las apuradas o a sacarla sin terminar.', 'Terminar la producción antes de ponerle fecha');
+    if(a.suena==='Lejos') add(2, 'Tu música **suena lejos** de lo que escuchás en Spotify.', 'En una playlist, al lado de otros temas, el tuyo suena más chico y la gente lo pasa.', 'Llevar tu sonido al nivel de lo que suena en Spotify');
+    if(a.suena==='Cerca') add(1, 'Suena **cerca** de tus referencias, pero no igual.', 'Ese "casi" se nota cuando tu tema suena al lado de otros.', 'Pulir la mezcla y el master para que compita');
+    if(a.suena==='No sé') add(1, '**No sabés** cómo suena tu tema al lado de los de Spotify.', 'Si no lo comparás, no sabés si está listo para salir.', 'Comparar tu tema con tus referencias antes de sacarlo');
+    if(a.voces==='Todavía no grabé') add(1, 'Todavía **no grabaste las voces.**', 'La voz es lo primero que escucha la gente: define cómo suena todo el tema.', 'Decidir dónde y cómo grabar tus voces');
+    if(a.voces==='En casa' && a.suena && a.suena!=='Igual de pro') add(1, 'Grabás las voces **en casa** y el tema todavía no suena pro.', 'Una voz mal grabada no se arregla del todo en la mezcla.', 'Mejorar la grabación de tu voz');
+    if(a.frena==='Cómo suena' && !out.length) add(1, 'Sentís que **tu sonido todavía no te representa.**', 'Si no te convence a vos, va a costar que convenza a otros.', 'Encontrar el sonido que te represente');
   }
   if(k==='identidad'){
-    if(a.halago==='Nadie me dice nada 😅' && s>0) return 'Nadie te dice qué le gusta de vos: __todavía no hay algo que te haga inconfundible.__';
-    if(s===2) return 'Le cantás **a cualquiera** que le guste tu género: __así el algoritmo no sabe a quién mostrarte.__';
-    if(s===1) return 'Tu oyente está **a medio definir:** __le hablás a mucha gente y a nadie en particular.__';
-    return 'Tenés claro a quién le cantás. Te halagan **'+low(a.halago||'')+'**… __¿eso se ve en lo que publicás?__';
+    if(a.oyente==='Le canto a cualquiera que le guste mi género') add(2, 'Le cantás **a cualquiera** que le guste tu género.', 'Si le hablás a todos, el algoritmo no sabe a quién mostrarte y nadie siente que es para él.', 'Definir a la persona exacta a la que le cantás');
+    if(a.oyente==='Más o menos') add(1, 'Tu oyente lo tenés **más o menos.**', 'Tus videos y tus letras le hablan a mucha gente y a nadie en particular.', 'Bajar a tierra quién es tu oyente');
+    if(a.halago==='Nadie me dice nada 😅') add(1, '**Nadie te dice** qué le gusta de tu música.', 'Todavía no sabés qué te hace distinto, y eso es justo lo que tenés que mostrar.', 'Descubrir qué te hace distinto');
   }
   if(k==='perfil'){
-    if(s===2) return 'El que llega a tu perfil **no entiende en 5 segundos** qué hacés: __se va sin escucharte.__';
-    if(s===1) return a.frena==='No sé qué publicar' ? 'Tu perfil se entiende, pero **no sabés qué publicar:** __la gente no tiene motivos para volver.__' : 'Tu perfil se entiende, pero **no te ve nadie:** __todavía no llega gente nueva.__';
-    return 'Tu perfil se entiende: __falta ver si convierte al que llega.__';
+    if(a.perfil==='Creo que no') add(2, 'El que entra a tu Instagram **no entiende rápido** qué música hacés.', 'Si no lo entiende en segundos, se va sin escucharte.', 'Que tu perfil diga en 5 segundos quién sos y qué hacés');
+    if(a.perfil==='Nunca lo pensé') add(2, '**Nunca miraste tu perfil** con los ojos de alguien que no te conoce.', 'Es tu vidriera: ahí deciden si te siguen o no.', 'Que tu perfil diga en 5 segundos quién sos y qué hacés');
+    if(HALAGO_TXT[a.halago] && a.perfil && a.perfil!=='Sí') add(1, 'Te halagan **'+HALAGO_TXT[a.halago]+',** pero tu perfil no lo muestra.', 'Lo que más gusta de vos no es lo primero que ve el que llega.', 'Que '+HALAGO_TXT[a.halago]+(HALAGO_TXT[a.halago].indexOf('tus ')===0?' sean':' sea')+' lo primero que se vea');
+    if(a.frena==='No me ve nadie') add(2, 'Sentís que **no te ve nadie.**', 'Si tu contenido no llega a gente nueva, tu música solo la escuchan tus conocidos.', 'Que tu contenido llegue a gente que no te conoce');
+    if(a.frena==='No sé qué publicar') add(2, '**No sabés qué publicar.**', 'Sin contenido constante, la gente se olvida de vos entre tema y tema.', 'Tener claro qué publicar cada semana');
   }
   if(k==='lanzamiento'){
-    if(a.frena==='Lanzo y no pasa nada') return 'Lanzás y no pasa nada: **el problema no es el tema,** __es lo que pasa antes de que salga.__';
-    if(a.ultimo==='El día que salió' || a.ultimo==='Después') return 'Tu lanzamiento empieza **el día que sale el tema,** __y ese día ya es tarde.__';
-    if(a.ultimo==='Nunca lancé nada') return 'Vas a lanzar **por primera vez** __sin un plan armado.__';
-    if(a.fecha==='Sin fecha todavía') return '**Sin fecha** no hay plan: __el tema sale cuando sale.__';
-    return 'Empezás a mover tus temas **antes de que salgan:** bien.';
+    if(a.frena==='Lanzo y no pasa nada') add(2, 'Lanzás y **no pasa nada.**', 'Casi nunca es el tema: es lo que pasa antes y después de que sale.', 'Tener un plan para antes, durante y después del lanzamiento');
+    if(a.ultimo==='El día que salió') add(2, 'Empezaste a mover tu último tema **el día que salió.**', 'Ese día ya es tarde: nadie sabía que venía.', 'Empezar a mover el tema semanas antes de que salga');
+    if(a.ultimo==='Después') add(2, 'Moviste tu último tema **después de que salió.**', 'Las primeras semanas son las que más cuentan, y se perdieron.', 'Empezar a mover el tema semanas antes de que salga');
+    if(a.ultimo==='Nunca lancé nada') add(1, '**Nunca lanzaste** nada todavía.', 'Un primer lanzamiento sin plan suele pasar desapercibido.', 'Armar el plan de tu primer lanzamiento');
+    if(a.fecha==='Sin fecha todavía') add(1, '**No tenés fecha** para tu próximo tema.', 'Sin fecha no hay plan, y el tema sale cuando sale.', 'Ponerle fecha a tu próximo lanzamiento');
   }
+  return out.sort((x,y)=>y.s-x.s);
 }
-function low(t){ return String(t).charAt(0).toLowerCase()+String(t).slice(1); }
+function scoreOf(k){ return problemsOf(k).reduce((m,p)=>Math.max(m,p.s),0); }
+function weightOf(k){ return problemsOf(k).reduce((n,p)=>n+p.s,0); }
+function lineOf(k){ const p = problemsOf(k)[0]; return p ? p.p+' '+p.w : AREAS.find(A=>A.k===k).ok; }
+/* Estás acá: el PRIMER tramo del camino que te frena (si ninguno te frena, el primero a ajustar).
+   Se arregla en orden: sonido → a quién le cantás → perfil → lanzamiento. */
 function cuello(){
-  const pref = {'Cómo suena':'sonido','No me ve nadie':'perfil','No sé qué publicar':'perfil','Lanzo y no pasa nada':'lanzamiento'}[S.frena];
-  const order = ['sonido','lanzamiento','identidad','perfil'];
-  let best = null, bs = -1;
-  AREAS.forEach(A=>{ const sc = scoreOf(A.k) + (A.k===pref ? 0.5 : 0) - order.indexOf(A.k)*0.01; if(sc>bs){ bs=sc; best=A; } });
-  return best;
+  return AREAS.find(A=>scoreOf(A.k)===2) || AREAS.find(A=>scoreOf(A.k)===1) || AREAS[AREAS.length-1];
 }
+/* qué tenés que hacer: en el orden del camino, empezando por donde estás (sin repetidos) */
+function todoList(){
+  const seen = {}, list = [];
+  const start = AREAS.indexOf(cuello());
+  AREAS.slice(start).concat(AREAS.slice(0,start)).forEach(A=>problemsOf(A.k).forEach(p=>{ if(!seen[p.t]){ seen[p.t]=1; list.push({t:p.t, a:A, s:p.s}); } }));
+  return list;
+}
+function totalProblems(){ return AREAS.reduce((n,A)=>n+problemsOf(A.k).length,0); }
 
 /* ════════════════════════════════════════════════════════════════════
    DIAGNÓSTICO DEL ARTISTA — motor del chat (versión liviana, sin contenido pago)
@@ -882,12 +897,12 @@ try { pos = parseInt(localStorage.getItem(KPOS)||'0',10)||0; } catch(e){}
 function savePos(){ try { localStorage.setItem(KPOS, String(pos)); } catch(e){} refreshSide(); }
 
 /* ── tarjetas ── */
-const COL = ['#7fff5f','#ffd54a','#ff4d6d'], TAG = ['BIEN','A MEJORAR','FUGA'];
+const COL = ['#7fff5f','#ffd54a','#ff4d6d'], TAG = TAGS, TXTCOL = ['#1f7a3f','#8a6a00','#c0263f'];
 function radarHTML(n){
   return '<div class="radar">'+AREAS.map((A,i)=>{
     if(i>=n) return '<div class="ra hid"><span class="rn">'+esc(A.t)+'</span><span class="rb"><i style="width:100%"></i></span><span class="rt">?</span></div>';
     const s = scoreOf(A.k);
-    return '<div class="ra"><span class="rn">'+esc(A.t)+'</span><span class="rb"><i style="width:'+[34,67,100][s]+'%;background:'+COL[s]+'"></i></span><span class="rt" style="color:'+(s===1?'#8a6a00':s===2?'#c0263f':'#1f7a3f')+'">'+TAG[s]+'</span></div>';
+    return '<div class="ra"><span class="rn">'+esc(A.t)+'</span><span class="rb"><i style="width:'+[34,67,100][s]+'%;background:'+COL[s]+'"></i></span><span class="rt" style="color:'+TXTCOL[s]+'">'+TAG[s]+'</span></div>';
   }).join('')+'</div>';
 }
 function fichaHTML(){
@@ -897,21 +912,27 @@ function fichaHTML(){
 }
 function rutaHTML(){
   const C = cuello();
-  return '<div class="ruta">' + AREAS.map((A,i)=>{ const s = scoreOf(A.k), here = A.k===C.k;
-    return '<div class="tramo'+(here?' here':'')+'"><span class="dot" style="background:'+COL[s]+'">'+A.ico+'</span><div class="tt"><b>'+(i+1)+' · '+esc(A.t)+'</b><span class="tag" style="color:'+(s===1?'#8a6a00':s===2?'#c0263f':'#1f7a3f')+'">'+TAG[s]+'</span>'+(here?'<span class="aqui">📍 ESTAS ACA</span>':'')+'</div></div>'; }).join('')
-    + '<div class="tramo meta"><span class="dot">⭐</span><div class="tt"><b>Tu lanzamiento con oyentes de verdad</b><span class="tag">LA META</span></div></div></div>';
+  return '<div class="ruta">' + AREAS.map((A,i)=>{ const s = scoreOf(A.k), here = A.k===C.k, ps = problemsOf(A.k);
+    return '<div class="tramo'+(here?' here':'')+'"><span class="dot" style="background:'+COL[s]+'">'+A.ico+'</span><div class="tt">'
+      + '<div class="th"><b>'+(i+1)+' · '+esc(A.t)+'</b><span class="tag" style="color:'+TXTCOL[s]+'">'+TAG[s]+'</span></div>'
+      + (here ? '<span class="aqui">📍 ESTAS ACA</span>' : '')
+      + (ps.length ? '<ul>'+ps.map(p=>'<li><span class="pt" style="background:'+COL[p.s]+'"></span><div>'+fmt(p.p)+'<small>'+fmt(p.w)+'</small></div></li>').join('')+'</ul>'
+                   : '<p class="okl">✓ '+fmt(A.ok)+'</p>')
+      + '</div></div>'; }).join('')
+    + '<div class="tramo meta"><span class="dot">⭐</span><div class="tt"><div class="th"><b>Tu lanzamiento con oyentes de verdad</b><span class="tag">LA META</span></div></div></div></div>';
 }
 function resultHTML(){
-  const C = cuello(), sc = scoreOf(C.k);
-  const fugas = AREAS.filter(A=>A.k!==C.k && scoreOf(A.k)>0).sort((a,b)=>scoreOf(b.k)-scoreOf(a.k)).slice(0,2);
-  const hacer = [C, ...AREAS.filter(A=>A.k!==C.k && scoreOf(A.k)>0).sort((a,b)=>scoreOf(b.k)-scoreOf(a.k))].slice(0,3);
+  const C = cuello(), n = totalProblems(), todo = todoList();
+  const resumen = n===0 ? 'No encontré nada que te frene. **Ahora toca escalar.**'
+    : (n===1 ? 'Encontré **1 cosa** que hoy frena tu carrera. __Está acá, en su tramo.__' : 'Encontré **'+n+' cosas** que hoy frenan tu carrera. __Están todas acá, tramo por tramo.__');
   return '<div class="res">'
     + '<div class="part"><span class="pn">1</span><h4>📍 Dónde estás hoy</h4></div>'
+    + '<p class="how">'+fmt(resumen)+'</p>'
     + rutaHTML()
-    + '<div class="cue" style="--c:'+COL[Math.max(1,sc)]+';margin-top:16px"><span class="ps">TE ESTA FRENANDO</span><h3>'+C.big+'</h3><p>'+fmt(lineOf(C.k))+'</p></div>'
-    + fugas.map(A=>'<p class="fuga"><span style="background:'+COL[scoreOf(A.k)]+'"></span>'+fmt(lineOf(A.k))+'</p>').join('')
     + '<div class="part" style="margin-top:22px"><span class="pn">2</span><h4>✅ Qué tenés que hacer</h4></div>'
-    + '<div class="todo">'+hacer.map((A,i)=>'<div class="'+(i===0?'first':'')+'"><span class="n">'+(i+1)+'</span><p><b>'+esc(A.fix)+'</b><small>'+(i===0?'Tu próximo paso · ':'Después · ')+esc(A.t)+'</small></p></div>').join('')+'</div>'
+    + (todo.length
+        ? '<p class="how">En este orden, <b>empezando por donde estás:</b></p><div class="todo">'+todo.map((T,i)=>'<div class="'+(i===0?'first':'')+'"><span class="n">'+(i+1)+'</span><p><b>'+esc(T.t)+'</b><small>'+(i===0?'Tu próximo paso · ':'')+esc(T.a.t)+'</small></p></div>').join('')+'</div>'
+        : '<div class="todo"><div class="first"><span class="n">1</span><p><b>Hacer que más gente escuche lo que ya tenés</b><small>Tu próximo paso</small></p></div></div>')
     + '</div>';
 }
 function waText(){
@@ -919,7 +940,7 @@ function waText(){
   const fecha = {'Este mes':'este mes','En 1 a 3 meses':'en 1 a 3 meses','Sin fecha todavía':'cuando tenga fecha'}[S.fecha] || 'pronto';
   const plan = {'Hacerlo yo solo, sin invertir':'lo pensaba hacer solo','Invertir algo si vale la pena':'invertiría si vale la pena','Ya tengo un presupuesto pensado':'tengo un presupuesto pensado'}[S.plan];
   const datos = [S.genero, 'canción '+(ESTADO_TXT[S.estado]||'—'), 'voces: '+low(S.voces||'—'), S.ciudad, 'suena '+low(S.suena||'—')+' al lado de mis referencias', 'último lanzamiento: '+low(S.ultimo||'—'), plan, (S.ig ? 'IG '+S.ig.trim() : '')].filter(Boolean).join(' · ');
-  return 'Ey Larry! Soy '+nombre()+' 🎤 Armé mi hoja de ruta: mi próximo paso es '+C.me+' y quiero sacar lo próximo '+fecha+'. ¿Me ayudás a encaminarlo? Te paso la demo 👇\n\n('+datos+')';
+  return 'Ey Larry! Soy '+nombre()+' 🎤 Armé mi hoja de ruta: '+(totalProblems()===1?'me salió 1 cosa':'me salieron '+totalProblems()+' cosas')+' para trabajar y mi próximo paso es '+C.me+'. Quiero sacar lo próximo '+fecha+'. ¿Me ayudás a encaminarlo? Te paso la demo 👇\n\n('+datos+')';
 }
 function waURL(){ return 'https://wa.me/'+WHATSAPP+'?text='+encodeURIComponent(waText()); }
 function ctaHTML(){
