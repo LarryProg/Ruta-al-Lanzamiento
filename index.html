@@ -3,20 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>¿Qué te está frenando? · Diagnóstico del artista · @larry.prod</title>
-<meta name="description" content="En 4 minutos te digo qué está frenando tu música. Gratis, sin mail ni teléfono. Con Larry (@larry.prod).">
+<title>Dejá de lanzar canciones que nadie escucha · Ruta al Lanzamiento · @larry.prod</title>
+<meta name="description" content="En 4 minutos te armo tu hoja de ruta: qué te está frenando y cuál es tu próximo paso, de tu marca a tu lanzamiento. Gratis, con Larry (@larry.prod).">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://larryprog.github.io/Diagnostico-del-Artista/">
-<meta property="og:title" content="¿Qué te está frenando? · Diagnóstico gratis del artista">
-<meta property="og:description" content="En 4 minutos te digo qué está frenando tu música. Gratis, sin mail ni teléfono. Con Larry (@larry.prod).">
-<meta property="og:image" content="https://larryprog.github.io/Diagnostico-del-Artista/og.png">
+<meta property="og:url" content="https://larryprog.github.io/Ruta-al-Lanzamiento/">
+<meta property="og:title" content="Dejá de lanzar canciones que nadie escucha · Ruta al Lanzamiento">
+<meta property="og:description" content="En 4 minutos te armo tu hoja de ruta: qué te está frenando y cuál es tu próximo paso, de tu marca a tu lanzamiento. Gratis, con Larry (@larry.prod).">
+<meta property="og:image" content="https://larryprog.github.io/Ruta-al-Lanzamiento/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="es_ES">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="¿Qué te está frenando? · Diagnóstico gratis del artista">
-<meta name="twitter:description" content="En 4 minutos te digo qué está frenando tu música. Gratis, sin mail ni teléfono. Con Larry (@larry.prod).">
-<meta name="twitter:image" content="https://larryprog.github.io/Diagnostico-del-Artista/og.png">
+<meta name="twitter:title" content="Dejá de lanzar canciones que nadie escucha · Ruta al Lanzamiento">
+<meta name="twitter:description" content="En 4 minutos te armo tu hoja de ruta: qué te está frenando y cuál es tu próximo paso, de tu marca a tu lanzamiento. Gratis, con Larry (@larry.prod).">
+<meta name="twitter:image" content="https://larryprog.github.io/Ruta-al-Lanzamiento/og.png">
 <meta name="theme-color" content="#1a58b4">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&family=Caveat:wght@600&family=Special+Elite&family=DM+Mono:wght@400;500&family=Press+Start+2P&family=VT323&family=Playfair+Display:wght@700&family=Permanent+Marker&family=Baloo+2:wght@700&display=swap" rel="stylesheet">
@@ -455,6 +455,20 @@
     #printArea .qa div:last-child{font-size:14px;white-space:pre-wrap}
   }
 
+  .intro h1{font-size:clamp(17px,2.6vw,26px);max-width:640px;margin:0 auto}
+  /* ── la ruta ── */
+  .ruta{position:relative;display:grid;gap:10px;padding-left:4px}
+  .ruta::before{content:'';position:absolute;left:25px;top:20px;bottom:20px;border-left:4px dashed #151515}
+  .tramo{position:relative;display:flex;align-items:center;gap:12px}
+  .tramo .dot{flex:none;width:46px;height:46px;border:3px solid #000;box-shadow:3px 3px 0 #000;display:flex;align-items:center;justify-content:center;font-size:20px;z-index:1}
+  .tramo .tt{flex:1;min-width:0;background:#fff;border:2px solid var(--line2);padding:8px 12px;display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px}
+  .tramo .tt b{font-size:15.5px;flex:1;min-width:140px}
+  .tramo .tag{font-family:'Press Start 2P',monospace;font-size:8px}
+  .tramo.here .tt{border:3px solid #151515;background:#fffbe9}
+  .tramo .aqui{flex-basis:100%;font-family:'Press Start 2P',monospace;font-size:9px;color:#c0263f}
+  .tramo.meta .dot{background:#151515}
+  .tramo.meta .tt{background:#151515;color:#fff;border-color:#151515}
+  .tramo.meta .tag{color:#7fff5f}
   /* ── diagnóstico ── */
   .ficha h3{font-family:'Press Start 2P',monospace;font-weight:400;font-size:16px;margin:10px 0 12px;line-height:1.4}
   .ficha .ps{color:var(--muted)}
@@ -502,7 +516,7 @@
     <header class="chead">
       <button id="menuBtn" aria-label="Ver recorrido">☰</button>
       <div class="mav larry live" data-frame="base" id="mav"></div>
-      <div class="ttl"><b>DIAGNOSTICO DEL ARTISTA</b><small id="sub">en línea</small></div>
+      <div class="ttl"><b>RUTA AL LANZAMIENTO</b><small id="sub">en línea</small></div>
       <a class="hdl hd" href="https://www.instagram.com/larry.prod" target="_blank" rel="noopener">@LARRY.PROD</a>
     </header>
     <div class="pbar"><i id="pbar"></i></div>
@@ -707,7 +721,8 @@ function studioLayers(){
   return { back: svg, front: '' };
 }
 
-/* DIAGNÓSTICO DEL ARTISTA — lead magnet gratis (versión corta del Manual de Marca)
+/* TU RUTA AL LANZAMIENTO — lead magnet gratis (versión corta del Manual de Marca)
+   Promesa: encaminar tu carrera desde tu marca hasta tu lanzamiento, en 4 minutos.
    Regla del guardián: acá solo van las preguntas, el semáforo y las frases de "fuga".
    Nada del método pago (frameworks, plantillas, ejemplos armados).
    **así** = negrita (lo más importante) · __así__ = subrayado fino (lo secundario) · ! al principio = frase clave */
@@ -736,7 +751,7 @@ const STEPS = [
 },
 {
   id:'p3', t:'Tu lanzamiento', min:1,
-  guide:{anim:'jump', prop:'mic', lines:['Última parada: **tu lanzamiento.**','Tres preguntas y __te muestro el resultado.__']},
+  guide:{anim:'jump', prop:'mic', lines:['Última parada: **tu lanzamiento.**','Unas preguntas más y __te muestro tu ruta completa.__']},
   fields:[
     {id:'ultimo', kind:'choice', label:'Tu último lanzamiento, ¿cuándo empezaste a moverlo?', options:['Semanas antes','El día que salió','Después','Nunca lancé nada']},
     {id:'fecha', kind:'choice', label:'¿Cuándo querés sacar lo próximo?', options:['Este mes','En 1 a 3 meses','Sin fecha todavía']},
@@ -747,18 +762,18 @@ const STEPS = [
 ];
 
 const GUIDE_COVER = { anim:'rise', prop:'note', lines:[
-  'Ey, soy **Larry** 👋 Productor musical.',
-  '!En 4 minutos te digo qué te está frenando… y spoiler: no siempre es la música.',
-  'Son **3 paradas cortas:** __tu música, cómo te ven y tu lanzamiento.__ Casi todo se contesta con un toque.',
-  'Al final te muestro **tu diagnóstico.** __No te pido mail ni teléfono.__'] };
+  'Ey, soy **Larry** 👋 Productor. Trabajo con artistas __desde su marca hasta el día que sale su tema.__',
+  '!Si tu último tema lo escucharon tus amigos y nadie más, esto es para vos.',
+  'En **4 minutos** te armo **tu hoja de ruta:** __dónde estás hoy, qué te está frenando y cuál es tu próximo paso.__',
+  'Son **3 paradas cortas** y casi todo se contesta con un toque. __Sin mail ni teléfono.__'] };
 const GUIDE_FINAL = { anim:'jump', prop:'star', lines:[] };
 
 /* ── Diagnóstico: 4 áreas · 0 = bien · 1 = a mejorar · 2 = fuga ── */
 const AREAS = [
-  {k:'sonido', t:'Tu sonido', me:'mi sonido', big:'TU SONIDO', fix:'Que tu tema suene a la altura de Spotify'},
-  {k:'identidad', t:'A quién le cantás', me:'saber a quién le canto', big:'A QUIÉN LE CANTÁS', fix:'Saber exactamente a quién le cantás'},
-  {k:'perfil', t:'Tu perfil', me:'mi perfil', big:'TU PERFIL', fix:'Un perfil que haga quedarse al que llega'},
-  {k:'lanzamiento', t:'Tu lanzamiento', me:'mi lanzamiento', big:'TU LANZAMIENTO', fix:'Un plan de semanas antes de sacar el tema'}
+  {k:'sonido', t:'Tu sonido', me:'mi sonido', big:'TU SONIDO', ico:'🎧', fix:'Que tu tema suene a la altura de Spotify'},
+  {k:'identidad', t:'A quién le cantás', me:'saber a quién le canto', big:'A QUIÉN LE CANTÁS', ico:'❤️', fix:'Saber exactamente a quién le cantás'},
+  {k:'perfil', t:'Tu perfil', me:'mi perfil', big:'TU PERFIL', ico:'📱', fix:'Un perfil que haga quedarse al que llega'},
+  {k:'lanzamiento', t:'Tu lanzamiento', me:'mi lanzamiento', big:'TU LANZAMIENTO', ico:'🚀', fix:'Un plan de semanas antes de sacar el tema'}
 ];
 const DEMO = ['Es una idea o una letra','Demo en el celu','Demo con beat','Grabada, sin mezclar'];
 function scoreOf(k){
@@ -830,22 +845,23 @@ const AFTER = {
   nombre: [{k:'say', fn:()=>'¡Un gusto, **'+nombre()+'**! 🤝 Arrancamos.'}],
   estado: [{k:'say', fn:()=>'Anotado: tu próxima canción está __'+(ESTADO_TXT[S.estado]||'en camino')+'.__'}],
   ciudad: [{k:'say', t:'Listo, ya tengo **tu ficha de artista** 👇'},{k:'card', card:'ficha'}],
-  perfil: [{k:'say', t:'Ya tengo **2 de 4 áreas.** __Mirá cómo viene tu radar:__'},{k:'card', card:'radar2'}],
-  frena: [{k:'say', t:'Ya van **3 de 4.** __La última se revela al final.__'},{k:'card', card:'radar3'},{k:'say', t:'!Falta una y está tu resultado.'}]
+  perfil: [{k:'say', t:'Ya tengo **2 de 4 tramos** de tu ruta. __Mirá cómo viene:__'},{k:'card', card:'radar2'}],
+  frena: [{k:'say', t:'Ya van **3 de 4 tramos.** __El último se revela al final.__'},{k:'card', card:'radar3'},{k:'say', t:'!Falta una y está tu hoja de ruta.'}]
 };
 function buildScript(){
   const B = [];
   GUIDE_COVER.lines.forEach(t=>B.push({k:'say', t}));
-  B.push({k:'go', label:'Arrancar (4 min) →'});
+  B.push({k:'go', label:'Quiero mi ruta (4 min) →'});
   STEPS.forEach((st, si)=>{
     B.push({k:'chapter', st, si});
     st.guide.lines.forEach(t=>B.push({k:'say', t}));
     st.fields.forEach(f=>{ B.push({k:'ask', f}); (AFTER[f.id]||[]).forEach(c=>B.push(c)); });
   });
   B.push({k:'chapter', final:true});
-  B.push({k:'say', fn:()=>'!'+nombre()+', esto es lo que te está frenando.'});
+  B.push({k:'say', fn:()=>'!'+nombre()+', esta es tu hoja de ruta.'});
   B.push({k:'card', card:'result'});
-  B.push({k:'say', t:'Esto **tiene arreglo,** pero depende de tu caso. __Mandame tu diagnóstico y te digo por dónde empezaría yo.__'});
+  B.push({k:'say', t:'Este es **el mismo camino que hago con mis artistas:** __sonido, a quién le cantás, perfil y lanzamiento. En ese orden.__'});
+  B.push({k:'say', t:'Si querés que tu próximo tema **no salga a ciegas,** mandame tu ruta y __te digo cómo arrancaríamos en tu caso.__'});
   B.push({k:'card', card:'cta'});
   return B;
 }
@@ -869,15 +885,21 @@ function fichaHTML(){
     + '<div class="fg"><div><b>Música</b>'+esc(S.genero||'—')+'</div><div><b>Próxima canción</b>'+esc(S.estado||'—')+'</div>'
     + '<div><b>Voces</b>'+esc(S.voces||'—')+'</div><div><b>Desde</b>'+esc(S.ciudad||'—')+'</div></div></div>';
 }
+function rutaHTML(){
+  const C = cuello();
+  return '<div class="ruta">' + AREAS.map((A,i)=>{ const s = scoreOf(A.k), here = A.k===C.k;
+    return '<div class="tramo'+(here?' here':'')+'"><span class="dot" style="background:'+COL[s]+'">'+A.ico+'</span><div class="tt"><b>'+(i+1)+' · '+esc(A.t)+'</b><span class="tag" style="color:'+(s===1?'#8a6a00':s===2?'#c0263f':'#1f7a3f')+'">'+TAG[s]+'</span>'+(here?'<span class="aqui">📍 ESTÁS ACÁ</span>':'')+'</div></div>'; }).join('')
+    + '<div class="tramo meta"><span class="dot">⭐</span><div class="tt"><b>Tu lanzamiento con oyentes de verdad</b><span class="tag">LA META</span></div></div></div>';
+}
 function resultHTML(){
   const C = cuello(), sc = scoreOf(C.k);
   const fugas = AREAS.filter(A=>A.k!==C.k && scoreOf(A.k)>0).sort((a,b)=>scoreOf(b.k)-scoreOf(a.k)).slice(0,2);
   const arma = [C, ...AREAS.filter(A=>A.k!==C.k && scoreOf(A.k)>0)].slice(0,3);
   return '<div class="res">'
-    + '<div class="cue" style="--c:'+COL[Math.max(1,sc)]+'"><span class="ps">TU CUELLO DE BOTELLA</span><h3>'+C.big+'</h3><p>'+fmt(lineOf(C.k))+'</p></div>'
-    + '<div class="mono vis-title" style="margin-top:16px">Tu radar completo</div>'+radarHTML(4)
-    + (fugas.length ? '<div class="mono vis-title" style="margin-top:16px">Otras fugas</div>'+fugas.map(A=>'<p class="fuga"><span style="background:'+COL[scoreOf(A.k)]+'"></span>'+fmt(lineOf(A.k))+'</p>').join('') : '')
-    + '<div class="mono vis-title" style="margin-top:16px">Lo que armaríamos con vos</div>'
+    + '<div class="mono vis-title">De tu marca a tu lanzamiento</div>'+rutaHTML()
+    + '<div class="cue" style="--c:'+COL[Math.max(1,sc)]+';margin-top:16px"><span class="ps">TU PRÓXIMO PASO</span><h3>'+C.big+'</h3><p>'+fmt(lineOf(C.k))+'</p></div>'
+    + (fugas.length ? '<div class="mono vis-title" style="margin-top:16px">Lo que también frena tu ruta</div>'+fugas.map(A=>'<p class="fuga"><span style="background:'+COL[scoreOf(A.k)]+'"></span>'+fmt(lineOf(A.k))+'</p>').join('') : '')
+    + '<div class="mono vis-title" style="margin-top:16px">Lo que armamos juntos en cada tramo</div>'
     + '<div class="lock">'+arma.map(A=>'<div>🔒 <b>'+esc(A.fix)+'</b><small>Lo vemos según tu caso</small></div>').join('')+'</div>'
     + '</div>';
 }
@@ -886,18 +908,18 @@ function waText(){
   const fecha = {'Este mes':'este mes','En 1 a 3 meses':'en 1 a 3 meses','Sin fecha todavía':'cuando tenga fecha'}[S.fecha] || 'pronto';
   const plan = {'Hacerlo yo solo, sin invertir':'lo pensaba hacer solo','Invertir algo si vale la pena':'invertiría si vale la pena','Ya tengo un presupuesto pensado':'tengo un presupuesto pensado'}[S.plan];
   const datos = [S.genero, 'canción '+(ESTADO_TXT[S.estado]||'—'), 'voces: '+low(S.voces||'—'), S.ciudad, 'suena '+low(S.suena||'—')+' al lado de mis referencias', 'último lanzamiento: '+low(S.ultimo||'—'), plan, (S.ig ? 'IG '+S.ig.trim() : '')].filter(Boolean).join(' · ');
-  return 'Ey Larry! Soy '+nombre()+' 🎤 Hice el diagnóstico: mi cuello de botella es '+C.me+' y quiero sacar lo próximo '+fecha+'. ¿Cómo lo arreglarías? Te paso la demo 👇\n\n('+datos+')';
+  return 'Ey Larry! Soy '+nombre()+' 🎤 Armé mi hoja de ruta: mi próximo paso es '+C.me+' y quiero sacar lo próximo '+fecha+'. ¿Me ayudás a encaminarlo? Te paso la demo 👇\n\n('+datos+')';
 }
 function waURL(){ return 'https://wa.me/'+WHATSAPP+'?text='+encodeURIComponent(waText()); }
 function ctaHTML(){
-  return '<div class="cta"><a class="btnp big" href="'+waURL()+'" target="_blank" rel="noopener" data-wa="1">📲 Mandarle mi diagnóstico a Larry</a>'
+  return '<div class="cta"><a class="btnp big" href="'+waURL()+'" target="_blank" rel="noopener" data-wa="1">📲 Quiero lanzar con Larry</a>'
     + '<p class="trust">✓ Te responde <b>Larry, él mismo</b> · ✓ sin compromiso<br>✓ si no es para vos, te lo dice · los proyectos arrancan en <b>300 €</b></p></div>';
 }
 function cardHTML(b){
   const c = b.card;
   if(c==='ficha') return '<div class="mcard">'+fichaHTML()+'</div>';
-  if(c==='radar2') return '<div class="mcard"><div class="mono vis-title">Tu radar</div>'+radarHTML(2)+'</div>';
-  if(c==='radar3') return '<div class="mcard"><div class="mono vis-title">Tu radar</div>'+radarHTML(3)+'</div>';
+  if(c==='radar2') return '<div class="mcard"><div class="mono vis-title">Tu ruta · 2 de 4 tramos</div>'+radarHTML(2)+'</div>';
+  if(c==='radar3') return '<div class="mcard"><div class="mono vis-title">Tu ruta · 3 de 4 tramos</div>'+radarHTML(3)+'</div>';
   if(c==='result') return '<div class="mcard" data-live="result">'+resultHTML()+'</div>';
   if(c==='cta') return '<div class="mcard" data-live="cta">'+ctaHTML()+'</div>';
   return '';
@@ -947,10 +969,10 @@ async function typing(ms){
 function durOf(b){ const n = b.t ? b.t.replace(/[*_!]/g,'').length : 70; return Math.max(400, Math.min(1100, n*14)); }
 function sceneHTML(b, live){
   const g = gOf(b), id = b.final ? 'final' : b.st.id;
-  const kick = b.final ? '★ RESULTADO' : 'PARADA '+(b.si+1)+' DE '+STEPS.length;
+  const kick = b.final ? '★ LLEGASTE' : 'PARADA '+(b.si+1)+' DE '+STEPS.length;
   const ST = studioLayers();
   return '<div class="scene" id="sc-'+id+'"><div class="sbox">'+ST.back+'<div class="larry'+(live?' in-'+(g.anim||'rise'):'')+'" data-frame="base"><div class="bob">'+LARRY_SVG.base+'</div></div>'+ST.front+propHTML(g, live?' in':'')+'</div>'
-    + '<div class="scene-t'+(live?' in':'')+'"><span class="ps">'+kick+'</span><h3>'+esc(b.final?'Tu diagnóstico':b.st.t)+'</h3>'+(b.st?'<span class="ps dim">⏱ '+b.st.min+' MIN</span>':'')+'</div></div>';
+    + '<div class="scene-t'+(live?' in':'')+'"><span class="ps">'+kick+'</span><h3>'+esc(b.final?'Tu hoja de ruta':b.st.t)+'</h3>'+(b.st?'<span class="ps dim">⏱ '+b.st.min+' MIN</span>':'')+'</div></div>';
 }
 function larryPart(b, live){
   if(b.k==='say'){ const t = b.fn ? b.fn() : b.t; const hito = t.charAt(0)==='!';
@@ -988,7 +1010,7 @@ cin.addEventListener('keydown', e=>{ if(e.key==='Enter' && !e.shiftKey){ e.preve
 $('#csend').onclick = ()=>{ SEND && SEND(); };
 function openInput(i){
   closeInput();
-  if(i<0){ const a = document.createElement('a'); a.className = 'qb pri'; a.href = waURL(); a.target = '_blank'; a.rel = 'noopener'; a.textContent = '📲 Mandarle mi diagnóstico a Larry'; quick.appendChild(a); return; }
+  if(i<0){ const a = document.createElement('a'); a.className = 'qb pri'; a.href = waURL(); a.target = '_blank'; a.rel = 'noopener'; a.textContent = '📲 Quiero lanzar con Larry'; quick.appendChild(a); return; }
   const b = SCRIPT[i];
   if(b.k==='go'){ qb(b.label, 'pri', ()=>finish(i, ()=>row('u','<div class="ubub">¡Dale!</div>'))); return; }
   const f = b.f;
@@ -1005,14 +1027,14 @@ function curChapter(){ let c = -1; CHAPTERS.forEach((ci,k)=>{ if(ci < pos) c = k
 function refreshSub(){
   const s = $('#sub'); if(document.body.classList.contains('typing')){ s.textContent = '✎ Larry está escribiendo…'; return; }
   const c = curChapter();
-  s.textContent = c<0 ? 'en línea · diagnóstico gratis' : (c<STEPS.length ? 'Parada '+(c+1)+' de '+STEPS.length+' · '+STEPS[c].t : '★ Tu diagnóstico');
+  s.textContent = c<0 ? 'en línea · tu ruta gratis' : (c<STEPS.length ? 'Parada '+(c+1)+' de '+STEPS.length+' · '+STEPS[c].t : '★ Tu hoja de ruta');
 }
 function refreshSide(){
   const c = curChapter();
   $('#route').innerHTML = '<div class="ps lbl">TU RECORRIDO</div>' + STEPS.map((s,k)=>{
     const reached = CHAPTERS[k] < pos, done = reached && c>k;
     return '<button type="button" class="'+(c===k?'cur':'')+(reached?'':' lock')+'" '+(reached?'data-jump="sc-'+s.id+'"':'disabled')+'><span class="n">0'+(k+1)+'</span><span>'+esc(s.t)+'</span><span class="s">'+(done?'✓':(reached?'':s.min+'′'))+'</span></button>';
-  }).join('') + '<button type="button" class="'+(c===STEPS.length?'cur':'')+(CHAPTERS[STEPS.length]<pos?'':' lock')+'" '+(CHAPTERS[STEPS.length]<pos?'data-jump="sc-final"':'disabled')+'><span class="n">★</span><span>Tu diagnóstico</span></button>';
+  }).join('') + '<button type="button" class="'+(c===STEPS.length?'cur':'')+(CHAPTERS[STEPS.length]<pos?'':' lock')+'" '+(CHAPTERS[STEPS.length]<pos?'data-jump="sc-final"':'disabled')+'><span class="n">★</span><span>Tu hoja de ruta</span></button>';
   $('#pbar').style.width = (Math.max(0,c+1)/(STEPS.length+1)*100)+'%';
   refreshSub();
 }
@@ -1022,11 +1044,11 @@ document.addEventListener('click', e=>{
   const el = document.getElementById(b.dataset.jump); if(el) el.scrollIntoView({behavior:'smooth', block:'start'}); document.body.classList.remove('menu');
 });
 $('#menuBtn').onclick = ()=>document.body.classList.toggle('menu');
-$('#resetBtn').onclick = ()=>{ if(!confirm('¿Empezar el diagnóstico de cero?')) return; try { localStorage.removeItem(KEY); localStorage.removeItem(KPOS); } catch(e){} location.reload(); };
+$('#resetBtn').onclick = ()=>{ if(!confirm('¿Armar tu ruta de cero?')) return; try { localStorage.removeItem(KEY); localStorage.removeItem(KPOS); } catch(e){} location.reload(); };
 
 /* ── arranque ── */
 function rebuild(){
-  tin.innerHTML = '<div class="intro"><img class="logo" src="'+(LOGO_A||LOGO)+'" alt="Larry Prod"'+(LOGO_A?'':' style="opacity:0"')+'><h1>¿Qué te está frenando?</h1><div class="byline">Diagnóstico gratis del artista · by <a href="https://www.instagram.com/larry.prod" target="_blank" rel="noopener">@larry.prod</a></div><div class="ps">4 MINUTOS · SIN MAIL NI TELÉFONO</div></div>'
+  tin.innerHTML = '<div class="intro"><img class="logo" src="'+(LOGO_A||LOGO)+'" alt="Larry Prod"'+(LOGO_A?'':' style="opacity:0"')+'><h1>Dejá de lanzar canciones que nadie escucha.</h1><div class="byline">Tu hoja de ruta gratis, de tu marca a tu lanzamiento · by <a href="https://www.instagram.com/larry.prod" target="_blank" rel="noopener">@larry.prod</a></div><div class="ps">4 MINUTOS · SIN MAIL NI TELEFONO</div></div>'
     + (()=>{ const ST = studioLayers(); return '<div class="scene" id="sc-cover"><div class="sbox">'+ST.back+'<div class="larry" data-frame="base"><div class="bob">'+LARRY_SVG.base+'</div></div>'+propHTML(GUIDE_COVER,'')+'</div><div class="scene-t"><span class="ps">TU GUIA</span><h3>Larry</h3><a class="ps dim iglink" href="https://www.instagram.com/larry.prod" target="_blank" rel="noopener">PRODUCTOR · @LARRY.PROD ↗</a></div></div>'; })();
   setSide(null, true);
   pos = Math.min(pos, SCRIPT.length);
