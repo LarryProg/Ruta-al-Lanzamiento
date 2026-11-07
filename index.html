@@ -790,9 +790,9 @@ const GUIDE_FINAL = { anim:'jump', prop:'star', lines:[] };
    Cada problema: p = qué te pasa · w = por qué te frena · t = qué tenés que hacer (el QUÉ, nunca el CÓMO) · s = 2 te frena / 1 a ajustar
    Estado del tramo: 0 VAS BIEN · 1 A AJUSTAR · 2 TE FRENA */
 const AREAS = [
-  {k:'sonido', t:'Tu sonido', me:'mi sonido', big:'TU SONIDO', ico:'🎧', ok:'Tu canción está terminada y suena a la altura. **Buena base.**'},
   {k:'identidad', t:'A quién le cantás', me:'saber a quién le canto', big:'A QUIEN LE CANTAS', ico:'❤️', ok:'Tenés claro a quién le cantás y qué te hace distinto. **Eso es oro.**'},
   {k:'perfil', t:'Tu perfil y tu contenido', me:'mi perfil y mi contenido', big:'TU PERFIL', ico:'📱', ok:'Tu perfil se entiende rápido. **Buena vidriera.**'},
+  {k:'sonido', t:'Tu sonido', me:'mi sonido', big:'TU SONIDO', ico:'🎧', ok:'Tu canción está terminada y suena a la altura. **Buena base.**'},
   {k:'lanzamiento', t:'Tu lanzamiento', me:'mi lanzamiento', big:'TU LANZAMIENTO', ico:'🚀', ok:'Movés tus temas antes de que salgan y tenés fecha. **Bien ahí.**'}
 ];
 const TAGS = ['VAS BIEN','A AJUSTAR','TE FRENA'];
@@ -836,16 +836,16 @@ function problemsOf(k){
 function scoreOf(k){ return problemsOf(k).reduce((m,p)=>Math.max(m,p.s),0); }
 function weightOf(k){ return problemsOf(k).reduce((n,p)=>n+p.s,0); }
 function lineOf(k){ const p = problemsOf(k)[0]; return p ? p.p+' '+p.w : AREAS.find(A=>A.k===k).ok; }
-/* Estás acá: el PRIMER tramo del camino que te frena (si ninguno te frena, el primero a ajustar).
-   Se arregla en orden: sonido → a quién le cantás → perfil → lanzamiento. */
+/* Estás acá: el PRIMER tramo del camino que tiene algo para ajustar.
+   El camino va en orden: primero la marca (a quién le cantás → perfil y contenido), después la música (sonido) y al final el lanzamiento.
+   Lo de la marca se hace antes de tocar una sola nota. */
 function cuello(){
-  return AREAS.find(A=>scoreOf(A.k)===2) || AREAS.find(A=>scoreOf(A.k)===1) || AREAS[AREAS.length-1];
+  return AREAS.find(A=>scoreOf(A.k)>0) || AREAS[AREAS.length-1];
 }
-/* qué tenés que hacer: en el orden del camino, empezando por donde estás (sin repetidos) */
+/* qué tenés que hacer: siempre en el orden del camino (sin repetidos) */
 function todoList(){
   const seen = {}, list = [];
-  const start = AREAS.indexOf(cuello());
-  AREAS.slice(start).concat(AREAS.slice(0,start)).forEach(A=>problemsOf(A.k).forEach(p=>{ if(!seen[p.t]){ seen[p.t]=1; list.push({t:p.t, a:A, s:p.s}); } }));
+  AREAS.forEach(A=>problemsOf(A.k).forEach(p=>{ if(!seen[p.t]){ seen[p.t]=1; list.push({t:p.t, a:A, s:p.s}); } }));
   return list;
 }
 function totalProblems(){ return AREAS.reduce((n,A)=>n+problemsOf(A.k).length,0); }
@@ -945,7 +945,7 @@ function waText(){
 function waURL(){ return 'https://wa.me/'+WHATSAPP+'?text='+encodeURIComponent(waText()); }
 function ctaHTML(){
   return '<div class="part"><span class="pn">3</span><h4>🚀 Cómo dar el paso</h4></div>'
-    + '<p class="how">Esto lo hago con mis artistas, <b>tramo por tramo:</b> el sonido en el estudio, tu perfil, tu contenido y el plan para que tu tema salga con gente esperándolo. <b>Mandame tu ruta</b> y te digo cómo arrancaríamos en tu caso.</p>'
+    + '<p class="how">Esto lo hago con mis artistas, <b>tramo por tramo:</b> primero tu marca y tu perfil, después el sonido en el estudio y al final el plan para que tu tema salga con gente esperándolo. <b>Mandame tu ruta</b> y te digo cómo arrancaríamos en tu caso.</p>'
     + '<div class="cta"><a class="btnp big" href="'+waURL()+'" target="_blank" rel="noopener" data-wa="1">📲 Quiero lanzar con Larry</a>'
     + '<p class="trust">✓ Te responde <b>Larry, él mismo</b> · ✓ sin compromiso<br>✓ si no es para vos, te lo dice · los proyectos arrancan en <b>300 €</b></p></div>';
 }
