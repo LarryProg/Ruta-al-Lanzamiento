@@ -456,6 +456,17 @@
   }
 
   .intro h1{font-size:clamp(17px,2.6vw,26px);max-width:640px;margin:0 auto}
+  .part{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .part .pn{flex:none;width:30px;height:30px;background:#151515;color:#7fff5f;font-family:'Press Start 2P',monospace;font-size:12px;display:flex;align-items:center;justify-content:center}
+  .part h4{font-family:'Press Start 2P',monospace;font-weight:400;font-size:13px;line-height:1.4}
+  .todo{display:grid;gap:8px}
+  .todo div{display:flex;gap:12px;align-items:flex-start;background:#fff;border:2px solid var(--line2);padding:10px 12px}
+  .todo div.first{border:3px solid #151515;background:#fffbe9}
+  .todo .n{flex:none;width:26px;height:26px;border:2px solid #151515;font-family:'Press Start 2P',monospace;font-size:10px;display:flex;align-items:center;justify-content:center}
+  .todo div.first .n{background:#7fff5f}
+  .todo p{font-size:15.5px;line-height:1.35}
+  .todo small{display:block;color:var(--muted);font-size:12.5px;margin-top:2px}
+  .how{font-size:15.5px;line-height:1.45;margin-bottom:14px}
   /* ── la ruta ── */
   .ruta{position:relative;display:grid;gap:10px;padding-left:4px}
   .ruta::before{content:'';position:absolute;left:25px;top:20px;bottom:20px;border-left:4px dashed #151515}
@@ -770,10 +781,10 @@ const GUIDE_FINAL = { anim:'jump', prop:'star', lines:[] };
 
 /* ── Diagnóstico: 4 áreas · 0 = bien · 1 = a mejorar · 2 = fuga ── */
 const AREAS = [
-  {k:'sonido', t:'Tu sonido', me:'mi sonido', big:'TU SONIDO', ico:'🎧', fix:'Que tu tema suene a la altura de Spotify'},
-  {k:'identidad', t:'A quién le cantás', me:'saber a quién le canto', big:'A QUIÉN LE CANTÁS', ico:'❤️', fix:'Saber exactamente a quién le cantás'},
-  {k:'perfil', t:'Tu perfil', me:'mi perfil', big:'TU PERFIL', ico:'📱', fix:'Un perfil que haga quedarse al que llega'},
-  {k:'lanzamiento', t:'Tu lanzamiento', me:'mi lanzamiento', big:'TU LANZAMIENTO', ico:'🚀', fix:'Un plan de semanas antes de sacar el tema'}
+  {k:'sonido', t:'Tu sonido', me:'mi sonido', big:'TU SONIDO', ico:'🎧', fix:'Que tu tema suene a la altura de Spotify antes de sacarlo'},
+  {k:'identidad', t:'A quién le cantás', me:'saber a quién le canto', big:'A QUIEN LE CANTAS', ico:'❤️', fix:'Definir a la persona exacta a la que le cantás'},
+  {k:'perfil', t:'Tu perfil', me:'mi perfil', big:'TU PERFIL', ico:'📱', fix:'Que tu perfil le diga en 5 segundos al que llega por qué quedarse'},
+  {k:'lanzamiento', t:'Tu lanzamiento', me:'mi lanzamiento', big:'TU LANZAMIENTO', ico:'🚀', fix:'Empezar a mover tu tema semanas antes de que salga'}
 ];
 const DEMO = ['Es una idea o una letra','Demo en el celu','Demo con beat','Grabada, sin mezclar'];
 function scoreOf(k){
@@ -860,8 +871,7 @@ function buildScript(){
   B.push({k:'chapter', final:true});
   B.push({k:'say', fn:()=>'!'+nombre()+', esta es tu hoja de ruta.'});
   B.push({k:'card', card:'result'});
-  B.push({k:'say', t:'Este es **el mismo camino que hago con mis artistas:** __sonido, a quién le cantás, perfil y lanzamiento. En ese orden.__'});
-  B.push({k:'say', t:'Si querés que tu próximo tema **no salga a ciegas,** mandame tu ruta y __te digo cómo arrancaríamos en tu caso.__'});
+  B.push({k:'say', t:'Ya sabés **dónde estás** y **qué tenés que hacer.** Falta lo más importante: __cómo dar el paso.__'});
   B.push({k:'card', card:'cta'});
   return B;
 }
@@ -888,19 +898,20 @@ function fichaHTML(){
 function rutaHTML(){
   const C = cuello();
   return '<div class="ruta">' + AREAS.map((A,i)=>{ const s = scoreOf(A.k), here = A.k===C.k;
-    return '<div class="tramo'+(here?' here':'')+'"><span class="dot" style="background:'+COL[s]+'">'+A.ico+'</span><div class="tt"><b>'+(i+1)+' · '+esc(A.t)+'</b><span class="tag" style="color:'+(s===1?'#8a6a00':s===2?'#c0263f':'#1f7a3f')+'">'+TAG[s]+'</span>'+(here?'<span class="aqui">📍 ESTÁS ACÁ</span>':'')+'</div></div>'; }).join('')
+    return '<div class="tramo'+(here?' here':'')+'"><span class="dot" style="background:'+COL[s]+'">'+A.ico+'</span><div class="tt"><b>'+(i+1)+' · '+esc(A.t)+'</b><span class="tag" style="color:'+(s===1?'#8a6a00':s===2?'#c0263f':'#1f7a3f')+'">'+TAG[s]+'</span>'+(here?'<span class="aqui">📍 ESTAS ACA</span>':'')+'</div></div>'; }).join('')
     + '<div class="tramo meta"><span class="dot">⭐</span><div class="tt"><b>Tu lanzamiento con oyentes de verdad</b><span class="tag">LA META</span></div></div></div>';
 }
 function resultHTML(){
   const C = cuello(), sc = scoreOf(C.k);
   const fugas = AREAS.filter(A=>A.k!==C.k && scoreOf(A.k)>0).sort((a,b)=>scoreOf(b.k)-scoreOf(a.k)).slice(0,2);
-  const arma = [C, ...AREAS.filter(A=>A.k!==C.k && scoreOf(A.k)>0)].slice(0,3);
+  const hacer = [C, ...AREAS.filter(A=>A.k!==C.k && scoreOf(A.k)>0).sort((a,b)=>scoreOf(b.k)-scoreOf(a.k))].slice(0,3);
   return '<div class="res">'
-    + '<div class="mono vis-title">De tu marca a tu lanzamiento</div>'+rutaHTML()
-    + '<div class="cue" style="--c:'+COL[Math.max(1,sc)]+';margin-top:16px"><span class="ps">TU PRÓXIMO PASO</span><h3>'+C.big+'</h3><p>'+fmt(lineOf(C.k))+'</p></div>'
-    + (fugas.length ? '<div class="mono vis-title" style="margin-top:16px">Lo que también frena tu ruta</div>'+fugas.map(A=>'<p class="fuga"><span style="background:'+COL[scoreOf(A.k)]+'"></span>'+fmt(lineOf(A.k))+'</p>').join('') : '')
-    + '<div class="mono vis-title" style="margin-top:16px">Lo que armamos juntos en cada tramo</div>'
-    + '<div class="lock">'+arma.map(A=>'<div>🔒 <b>'+esc(A.fix)+'</b><small>Lo vemos según tu caso</small></div>').join('')+'</div>'
+    + '<div class="part"><span class="pn">1</span><h4>📍 Dónde estás hoy</h4></div>'
+    + rutaHTML()
+    + '<div class="cue" style="--c:'+COL[Math.max(1,sc)]+';margin-top:16px"><span class="ps">TE ESTA FRENANDO</span><h3>'+C.big+'</h3><p>'+fmt(lineOf(C.k))+'</p></div>'
+    + fugas.map(A=>'<p class="fuga"><span style="background:'+COL[scoreOf(A.k)]+'"></span>'+fmt(lineOf(A.k))+'</p>').join('')
+    + '<div class="part" style="margin-top:22px"><span class="pn">2</span><h4>✅ Qué tenés que hacer</h4></div>'
+    + '<div class="todo">'+hacer.map((A,i)=>'<div class="'+(i===0?'first':'')+'"><span class="n">'+(i+1)+'</span><p><b>'+esc(A.fix)+'</b><small>'+(i===0?'Tu próximo paso · ':'Después · ')+esc(A.t)+'</small></p></div>').join('')+'</div>'
     + '</div>';
 }
 function waText(){
@@ -912,7 +923,9 @@ function waText(){
 }
 function waURL(){ return 'https://wa.me/'+WHATSAPP+'?text='+encodeURIComponent(waText()); }
 function ctaHTML(){
-  return '<div class="cta"><a class="btnp big" href="'+waURL()+'" target="_blank" rel="noopener" data-wa="1">📲 Quiero lanzar con Larry</a>'
+  return '<div class="part"><span class="pn">3</span><h4>🚀 Cómo dar el paso</h4></div>'
+    + '<p class="how">Esto lo hago con mis artistas, <b>tramo por tramo:</b> el sonido en el estudio, tu perfil, tu contenido y el plan para que tu tema salga con gente esperándolo. <b>Mandame tu ruta</b> y te digo cómo arrancaríamos en tu caso.</p>'
+    + '<div class="cta"><a class="btnp big" href="'+waURL()+'" target="_blank" rel="noopener" data-wa="1">📲 Quiero lanzar con Larry</a>'
     + '<p class="trust">✓ Te responde <b>Larry, él mismo</b> · ✓ sin compromiso<br>✓ si no es para vos, te lo dice · los proyectos arrancan en <b>300 €</b></p></div>';
 }
 function cardHTML(b){
