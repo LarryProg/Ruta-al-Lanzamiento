@@ -769,7 +769,7 @@ const STEPS = [
   fields:[
     {id:'nombre', kind:'text', label:'¿Cómo te llamás como artista?', ph:'Tu nombre artístico'},
     {id:'genero', kind:'choice', label:'¿Qué música hacés?', options:['Trap','R&B','Reggaetón','Pop','Rap','Indie / Rock','Otro']},
-    {id:'estado', kind:'choice', label:'¿En qué punto está tu próxima canción?', options:['Es una idea o una letra','Demo en el celu','Demo con beat','Grabada, sin mezclar','Terminada']},
+    {id:'estado', kind:'choice', label:'¿En qué punto está tu próxima canción?', options:['Es una idea o una letra','Demo en el móvil','Demo con beat','Grabada, sin mezclar','Terminada']},
     {id:'suena', kind:'choice', label:'Si la ponés al lado de tus artistas favoritos en Spotify, ¿cómo suena?', options:['Igual de pro','Cerca','Lejos','No sé']},
     {id:'voces', kind:'choice', label:'¿Dónde grabás (o grabarías) las voces?', options:['En casa','En un estudio','Todavía no grabé']},
     {id:'ciudad', kind:'choice', label:'¿Desde dónde hacés música?', options:['Mallorca','Madrid','Valencia','Galicia','Otra ciudad de España','Latinoamérica','Otro país']}
@@ -814,7 +814,7 @@ const AREAS = [
   {k:'lanzamiento', t:'Tu lanzamiento', me:'mi lanzamiento', big:'TU LANZAMIENTO', ico:'🚀', ok:'Movés tus temas antes de que salgan y tenés fecha. **Bien ahí.**'}
 ];
 const TAGS = ['VAS BIEN','A AJUSTAR','TE FRENA'];
-const DEMO = ['Es una idea o una letra','Demo en el celu','Demo con beat','Grabada, sin mezclar'];
+const DEMO = ['Es una idea o una letra','Demo en el móvil','Demo con beat','Grabada, sin mezclar'];
 const HALAGO_TXT = {'La voz':'tu voz','Las letras':'tus letras','El flow':'tu flow','Los beats':'tus beats','La vibra':'tu vibra'};
 function low(t){ return String(t).charAt(0).toLowerCase()+String(t).slice(1); }
 function problemsOf(k){
@@ -822,7 +822,7 @@ function problemsOf(k){
   const add = (s, p, w, t) => out.push({s, p, w, t});
   if(k==='sonido'){
     if(a.estado==='Es una idea o una letra') add(2, 'Tu próxima canción **todavía es una idea.**', 'Sin una canción terminada no hay nada que lanzar.', 'Convertir la idea en una canción terminada');
-    if(DEMO.includes(a.estado) && a.estado!=='Es una idea o una letra' && a.fecha==='Este mes') add(2, 'Querés sacarla **este mes** y todavía está __'+({'Demo en el celu':'en demo, grabada con el celu','Demo con beat':'en demo con beat','Grabada, sin mezclar':'grabada pero sin mezclar'}[a.estado]||'sin terminar')+'.__', 'Vas a terminarla a las apuradas o a sacarla sin terminar.', 'Terminar la producción antes de ponerle fecha');
+    if(DEMO.includes(a.estado) && a.estado!=='Es una idea o una letra' && a.fecha==='Este mes') add(2, 'Querés sacarla **este mes** y todavía está __'+({'Demo en el móvil':'en demo, grabada con el móvil','Demo con beat':'en demo con beat','Grabada, sin mezclar':'grabada pero sin mezclar'}[a.estado]||'sin terminar')+'.__', 'Vas a terminarla a las apuradas o a sacarla sin terminar.', 'Terminar la producción antes de ponerle fecha');
     if(a.suena==='Lejos') add(2, 'Tu música **suena lejos** de lo que escuchás en Spotify.', 'En una playlist, al lado de otros temas, el tuyo suena más chico y la gente lo pasa.', 'Llevar tu sonido al nivel de lo que suena en Spotify');
     if(a.suena==='Cerca') add(1, 'Suena **cerca** de tus referencias, pero no igual.', 'Ese "casi" se nota cuando tu tema suena al lado de otros.', 'Pulir la mezcla y el master para que compita');
     if(a.suena==='No sé') add(1, '**No sabés** cómo suena tu tema al lado de los de Spotify.', 'Si no lo comparás, no sabés si está listo para salir.', 'Comparar tu tema con tus referencias antes de sacarlo');
@@ -884,7 +884,7 @@ function fieldOf(fid){ for(const s of STEPS) for(const f of s.fields) if(f.id===
 function nombre(){ return (S.nombre||'').trim() || 'artista'; }
 
 /* ── reacciones de Larry: solo devuelven lo que dijo (nunca aconsejan) ── */
-const ESTADO_TXT = {'Es una idea o una letra':'en idea','Demo en el celu':'en demo, en el celu','Demo con beat':'en demo con beat','Grabada, sin mezclar':'grabada sin mezclar','Terminada':'terminada'};
+const ESTADO_TXT = {'Es una idea o una letra':'en idea','Demo en el móvil':'en demo, en el móvil','Demo con beat':'en demo con beat','Grabada, sin mezclar':'grabada sin mezclar','Terminada':'terminada'};
 const AFTER = {
   nombre: [{k:'say', fn:()=>'¡Un gusto, **'+nombre()+'**! 🤝 Arrancamos.'}],
   estado: [{k:'say', fn:()=>'Anotado: tu próxima canción está __'+(ESTADO_TXT[S.estado]||'en camino')+'.__'}],
