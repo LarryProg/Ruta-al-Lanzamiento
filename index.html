@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Dejá de lanzar canciones que nadie escucha · Ruta al Lanzamiento · @larry.prod</title>
-<link rel="icon" type="image/png" sizes="180x180" href="icon.png?v=2">
-<link rel="apple-touch-icon" href="icon.png?v=2">
+<link rel="icon" type="image/png" sizes="180x180" href="icon.png?v=3">
+<link rel="apple-touch-icon" href="icon.png?v=3">
 <meta name="description" content="En 4 minutos te armo tu hoja de ruta: qué te está frenando y cuál es tu próximo paso, de tu marca a tu lanzamiento. Gratis, con Larry (@larry.prod).">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://larryprog.github.io/Ruta-al-Lanzamiento/">
@@ -514,6 +514,22 @@
   .lock div{background:#fff;border:2px dashed #151515;padding:9px 12px;font-size:15px}
   .lock small{display:block;color:var(--muted);font-size:12.5px;margin-top:2px}
   .cta{text-align:center}
+  .cbtn{display:flex;align-items:center;gap:14px;width:100%;text-decoration:none;color:#000;background:#7fff5f;border:4px solid #000;box-shadow:6px 6px 0 #000;padding:12px 14px;text-align:left;animation:cbump 1.6s steps(2) infinite}
+  .cbtn:hover{background:#9bff83}
+  .cbtn:active{transform:translate(3px,3px);box-shadow:2px 2px 0 #000;animation:none}
+  .cb-av{flex:none;width:52px;height:52px;background:#1b1b22;border:3px solid #000;overflow:hidden;display:flex;justify-content:center}
+  .cb-av svg{width:46px;height:auto;margin-top:3px;image-rendering:pixelated}
+  .cb-tx{flex:1;min-width:0}
+  .cb-tx b{display:block;font-family:'Press Start 2P',monospace;font-weight:400;font-size:14px;line-height:1.45}
+  .cb-tx small{display:block;font-family:'Barlow',sans-serif;font-weight:600;font-size:14px;margin-top:5px;color:#14320c}
+  .cb-go{flex:none;font-family:'Press Start 2P',monospace;font-size:18px;animation:cgo .8s steps(2) infinite}
+  .cbtn.mini{width:auto;max-width:100%;padding:7px 10px;gap:10px;box-shadow:4px 4px 0 #000}
+  .cbtn.mini .cb-av{width:36px;height:36px;border-width:2px}.cbtn.mini .cb-av svg{width:32px;margin-top:2px}
+  .cbtn.mini .cb-tx b{font-size:11px}.cbtn.mini .cb-tx small{display:none}.cbtn.mini .cb-go{font-size:13px}
+  @keyframes cbump{0%,70%,100%{transform:none}80%{transform:translateY(-3px)}}
+  @keyframes cgo{50%{transform:translateX(4px)}}
+  @media (max-width:560px){ .cb-tx b{font-size:12px} .cb-tx small{font-size:13px} .cb-av{width:44px;height:44px} .cb-av svg{width:38px} }
+  @media (prefers-reduced-motion:reduce){ .cbtn,.cb-go{animation:none} }
   .btnp.big{display:block;text-decoration:none;font-size:17px;padding:15px 16px;text-align:center}
   .trust{font-size:13.5px;color:var(--muted);margin-top:12px;line-height:1.55}
   a.qb{text-decoration:none;display:inline-block}
@@ -945,10 +961,17 @@ function waText(){
   return 'Ey Larry! Soy '+nombre()+' 🎤 Armé mi hoja de ruta: '+(totalProblems()===1?'me salió 1 cosa':'me salieron '+totalProblems()+' cosas')+' para trabajar y mi próximo paso es '+C.me+'. Quiero sacar lo próximo '+fecha+'. ¿Me ayudás a encaminarlo? Te paso la demo 👇\n\n('+datos+')';
 }
 function waURL(){ return 'https://wa.me/'+WHATSAPP+'?text='+encodeURIComponent(waText()); }
+/* el botón de WhatsApp: carita de Larry + texto pixel + rebote suave */
+function ctaBtn(cls){
+  return '<a class="cbtn '+(cls||'')+'" href="'+waURL()+'" target="_blank" rel="noopener" data-wa="1">'
+    + '<span class="cb-av">'+HEAD+'</span>'
+    + '<span class="cb-tx"><b>QUIERO LANZAR CON LARRY</b><small>📲 Le mando mi ruta por WhatsApp · gratis</small></span>'
+    + '<span class="cb-go">▶</span></a>';
+}
 function ctaHTML(){
   return '<div class="part"><span class="pn">3</span><h4>🚀 Cómo dar el paso</h4></div>'
     + '<p class="how">Esto lo hago con mis artistas, <b>tramo por tramo:</b> primero tu marca y tu perfil, después el sonido en el estudio y al final el plan para que tu tema salga con gente esperándolo. <b>Mandame tu ruta</b> y te digo cómo arrancaríamos en tu caso.</p>'
-    + '<div class="cta"><a class="btnp big" href="'+waURL()+'" target="_blank" rel="noopener" data-wa="1">📲 Quiero lanzar con Larry</a>'
+    + '<div class="cta">'+ctaBtn('big')
     + '<p class="trust">✓ Te responde <b>Larry, él mismo</b> · ✓ sin compromiso<br>✓ si no es para vos, te lo dice</p></div>';
 }
 function cardHTML(b){
@@ -1046,7 +1069,7 @@ cin.addEventListener('keydown', e=>{ if(e.key==='Enter' && !e.shiftKey){ e.preve
 $('#csend').onclick = ()=>{ SEND && SEND(); };
 function openInput(i){
   closeInput();
-  if(i<0){ const a = document.createElement('a'); a.className = 'qb pri'; a.href = waURL(); a.target = '_blank'; a.rel = 'noopener'; a.textContent = '📲 Quiero lanzar con Larry'; quick.appendChild(a); return; }
+  if(i<0){ quick.innerHTML = ctaBtn('mini'); return; }
   const b = SCRIPT[i];
   if(b.k==='go'){ qb(b.label, 'pri', ()=>finish(i, ()=>row('u','<div class="ubub">¡Dale!</div>'))); return; }
   const f = b.f;
